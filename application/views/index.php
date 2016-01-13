@@ -71,7 +71,7 @@
                         <li><a href="#"><i class="fa fa-gear fa-fw"></i> 设置</a>
                         </li>
                         <li class="divider"></li>
-                        <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> 退出</a>
+                        <li><a href="<?php echo site_url(''); ?>"><i class="fa fa-sign-out fa-fw"></i> 退出</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
@@ -183,7 +183,7 @@
         });
 
         $('#table').bootstrapTable({
-            url: 'http://127.0.0.1:5000/sms',
+            url: 'http://<?php echo $this->config->item('addr'); ?>/sms',
             pagination: true,
             sidePagination: 'server',
             rowStyle: 'rowStyle',
