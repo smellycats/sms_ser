@@ -38,8 +38,9 @@
         <div class="row">
             <div class="col-md-4 col-md-offset-4">
                 <div class="login-panel panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">请登录</h3>
+                    <div id="alert-sms" class="alert alert-success alert-dismissable hidden">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <p id="sms-p"><p>
                     </div>
                     <div class="panel-body">
                         <form role="form">
@@ -76,29 +77,36 @@
 
     <script type="text/javascript">
     $("#login").click(function(){
-        var test = {
+        var login = {
             username: $("#username").val(),
             password: $("#password").val()
         }
-        alert(JSON.stringify(test));
+        //alert(JSON.stringify(login));
         $.ajax({
             //请求类型，这里为POST
             type: "POST",
             //你要请求的api的URL
             //url: "http://localhost/sms_ser/index.php/index/test2",
-            url: "http://<?php echo $this->config->item('addr'); ?>/token",
+            url: "http://<?php echo $this->config->item('addr'); ?>/login",
             //是否使用缓存
             cache: false,
             //数据类型，这里我用的是json
-            dataType: "json", 
+            dataType: "json",
             //必要的时候需要用JSON.stringify() 将JSON对象转换成字符串
-            data: JSON.stringify(test), //data: {key:value}, 
+            data: JSON.stringify(login), //data: {key:value}, 
             //请求成功的回调函数
             beforeSend: function(request) {
                 request.setRequestHeader("Content-Type", "application/json");
             },
             success: function(data, status, xhr){
-                alert(status);
+                $.ajaxSetup({  
+                    async : false  
+                }); 
+                $.post("<?php echo site_url('index/login'); ?>", { username: $("#username").val(), password: $("#password").val() } );
+                window.location = "<?php echo site_url('index/admin'); ?>"
+            },
+            error: function () {
+                alert('用户名或密码错误');
             }
         });
     });
