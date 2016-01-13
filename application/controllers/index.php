@@ -24,6 +24,8 @@ class Index extends CI_Controller
         $this->load->helper('my');
 
         $this->load->config('sms');
+
+        $this->load->library('session');
         #$this->load->model('Mtest');
     }
     
@@ -37,16 +39,23 @@ class Index extends CI_Controller
         $this->load->view('login');
     }
 
+    /**
+     * 保存登录信息
+     * 
+     * @return void
+     */
     public function login()
     {
-        $input_data = json_decode(trim(file_get_contents('php://input')), true);
+        #$input_data = json_decode(trim(file_get_contents('php://input')), true);
+        #echo json_encode(array('success'=>true, 'msg'=>'done'));
 
-
-        echo json_encode(array('success'=>true, 'msg'=>'done'));
+        $array['username'] = $this->input->post('username');
+        $array['password'] = $this->input->post('password');
+        $this->session->set_userdata($array);
     }
 
     /**
-     * 默认控制器
+     * 后台首页
      * 
      * @return void
      */
@@ -55,6 +64,11 @@ class Index extends CI_Controller
         $this->load->view('index');
     }
 
+    /**
+     * 短信发送
+     * 
+     * @return void
+     */
     public function send()
     {
         $this->load->view('smssend');
