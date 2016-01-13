@@ -65,7 +65,7 @@
                         <li><a href="#"><i class="fa fa-gear fa-fw"></i> 设置</a>
                         </li>
                         <li class="divider"></li>
-                        <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> 退出</a>
+                        <li><a href="<?php echo site_url(''); ?>"><i class="fa fa-sign-out fa-fw"></i> 退出</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
@@ -144,23 +144,27 @@
             mobiles: $("#mobiles").val(),
             content: $("#content").val()
         }
-
+        var username = '<?php echo $this->session->userdata('username');?>';
+        var password = '<?php echo $this->session->userdata('password');?>'; 
         $.ajax({
             //请求类型，这里为POST
             type: "POST",
             //你要请求的api的URL
             //url: "http://localhost/sms_ser/index.php/index/test2",
-            url: "http://127.0.0.1:5000/sms",
+            url: "http://<?php echo $this->config->item('addr'); ?>/sms",
             //是否使用缓存
             cache: false,
             //数据类型，这里我用的是json
             dataType: "json",
             //必要的时候需要用JSON.stringify() 将JSON对象转换成字符串
-            data: JSON.stringify(test), //data: {key:value}, 
+            data: JSON.stringify(test), //data: {key:value},
+            headers: {
+                "Authorization": "Basic " + btoa(username + ":" + password)
+            }, 
             //请求成功的回调函数
             beforeSend: function(request) {
                 request.setRequestHeader("Content-Type", "application/json");
-                //request.setRequestHeader("access_token", "123");
+                //request.setRequestHeader('Authorization', auth); 
             },
             //请求成功的回调函数
             success: function(data, status, xhr){
